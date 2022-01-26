@@ -1,0 +1,115 @@
+<HTML>
+
+    <HEAD>
+    
+    <TITLE>Color Vowels</TITLE>
+    <style>
+    
+    </style>
+    </HEAD>
+    
+    <BODY>
+      
+        <div>
+           Enter Your Text:
+
+        </div>
+        <div>
+            <textarea id="input" onkeyup="javascript:onChange()" style="
+            width: 500px;
+            height: 200;
+        ">This is a test. ie test</textarea>
+    </div>
+    <div>
+       Enter combos to ignore : "ou,ie"
+
+     </div>
+     <div>
+        <input type="text" id="ignore" onkeyup="javascript:onIgnoreChange()" </input>
+    </div>
+    <div>
+        Output:
+ 
+      </div>
+     <div id="output" contenteditable="true" style="
+    padding: 1px;
+    width: 500px;
+    min-height: 200;
+    border-color: gray;
+    border-block: unset;
+    border-style: solid;
+"></div>
+     
+        <script>
+            let ignore = localStorage.getItem('ignore')?localStorage.getItem('ignore'):"";
+            let colorsTxt = localStorage.getItem('colore')?localStorage.getItem('ignore'):"blue,green,orange,red,purple";
+            function copyTextToClipboard(text) {
+  if (!navigator.clipboard) {
+    fallbackCopyTextToClipboard(text);
+    return;
+  }
+  navigator.clipboard.writeText(text).then(function() {
+    console.log('Async: Copying to clipboard was successful!');
+  }, function(err) {
+    console.error('Async: Could not copy text: ', err);
+  });
+}
+
+            document.getElementById("ignore").value = ignore;
+            function onIgnoreChange(e)
+            {
+                var x = document.getElementById("ignore");
+                localStorage.setItem("ignore",x.value)
+                igonre = x.value; 
+            }
+            function onChange()
+            {
+                let output = ""
+               
+                let txt = document.getElementById("input").value;
+                let vowels = ['a','e','i','o','u']
+                let colors =colorsTxt.split(',');;// ['blue,green,orange,red,purple']
+                let ignores = ignore.split(',');
+                for(var i in ignores)
+                {
+                    let reg = new RegExp(ignores[i], 'g');
+                    txt = txt.replace(reg,"________:"+i);
+                }
+                debugger;
+                for(var i in txt)
+                {   
+                   let chr = txt[i];
+                   let index = vowels.findIndex(x=>x==chr)
+                   if(index != -1)
+                   {
+                            output +="<span style='color:"+colors[index]+"'>"+chr+"</span>"
+                   }
+                   else
+                   {
+                       if(chr=='\n')
+                       {
+                        output +='<br/>'
+                       }
+                       else {
+                        output+=chr;
+                       }
+                   }
+                }
+                for(var i in ignores)
+                {
+                    let reg = new RegExp("________:"+i, 'g');
+                    output = output.replace(reg,ignores[i]);
+                debugger;
+                }
+                document.getElementById("output").innerHTML=output
+
+            }
+            onChange();
+            function copyToClipboard(txt)
+            {
+                copyTextToClipboard(document.getElementById("output").innerHTML)
+            }
+           
+        </script>
+        </BODY>
+</HTML>
