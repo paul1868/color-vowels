@@ -75,7 +75,7 @@
                     let reg = new RegExp(ignores[i], 'g');
                     txt = txt.replace(reg,"________:"+i);
                 }
-                debugger;
+                
                 for(var i in txt)
                 {   
                    let chr = txt[i];
@@ -99,7 +99,7 @@
                 {
                     let reg = new RegExp("________:"+i, 'g');
                     output = output.replace(reg,ignores[i]);
-                debugger;
+               
                 }
                 document.getElementById("output").innerHTML=output
 
